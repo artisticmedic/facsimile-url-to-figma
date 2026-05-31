@@ -1,10 +1,15 @@
+# CSP notes (do not "harden" without testing self-capture):
+#   script-src 'unsafe-inline' is REQUIRED so the Facsimile extension can capture
+#     THIS site — it injects an inline <script> (capture.js) into the page, which is
+#     governed by the page's own script-src. Tightening to 'self' breaks self-capture.
+#   style-src 'unsafe-inline' is required by the inline <style> block + style="" attrs.
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests
 
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
