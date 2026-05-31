@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preload" href="fonts/InstrumentSerif-Italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <title>Facsimile — Installed</title>
+  <meta name="description" content="Facsimile is installed. Two quick setup steps before your first capture.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon.png">
+
+  <style>
+    /* ─── Self-hosted fonts ─── */
+    @font-face{font-family:'Instrument Serif';src:url('fonts/InstrumentSerif-Italic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap}
+    @font-face{font-family:'Inter';src:url('fonts/Inter-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+    @font-face{font-family:'Inter';src:url('fonts/Inter-SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+    @font-face{font-family:'Inter';src:url('fonts/Inter-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+    @font-face{font-family:'JetBrains Mono';src:url('fonts/JetBrainsMono-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+
+    /* ─── Tokens (matched to index.html :root) ─── */
+    :root {
+      --canvas: #f2f0e9;
+      --canvas-light: #f7f5ef;
+      --canvas-dark: #e6e3da;
+      --white: #fefdf9;
+      --ink: #1a1916;
+      --ink-soft: #3d3b35;
+      --ink-muted: #7a776d;
+      --ink-faint: #b0ada4;
+      --ink-ghost: #d4d1c8;
+      --amber: #e8a000;
+      --amber-dark: #c78800;
+      --amber-text: #8a5e00;
+      --amber-bg: #faf0d7;
+      --green: #5a8a6a;
+      --green-bg: #eef5f0;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      /* authentic Chrome greys (from index.html demo tokens) */
+      --cr-tabstrip: #dee1e6; --cr-tabstrip-dk: #d2d5db; --cr-tab: #ffffff;
+      --cr-toolbar: #ffffff; --cr-hair: #e0e0e0; --cr-omni: #f1f3f4; --cr-icon: #5f6368; --cr-text: #202124;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    body {
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ─── Nav (identical to index.html) ─── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 2rem;
+      background: rgba(242, 240, 233, 0.85);
+      backdrop-filter: blur(16px);
+    }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 1.25rem; }
+    .nav-links a {
+      color: var(--ink-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    /* ─── Utility ─── */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ─── Buttons (perfect-pill + amber glow, from index.html) ─── */
+    .btn {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.7rem 1.5rem;
+      border-radius: 999px;            /* perfect pill */
+      border: none;
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(.22,1,.36,1), box-shadow 0.22s cubic-bezier(.22,1,.36,1), background 0.15s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      will-change: transform;
+    }
+    .btn-primary {
+      background: var(--ink);
+      color: var(--canvas);
+      box-shadow:
+        0 1px 2px rgba(26,25,22,0.28),
+        0 6px 18px rgba(26,25,22,0.18),
+        0 6px 22px rgba(232,160,0,0.14),
+        inset 0 1px 0 rgba(255,255,255,0.10);
+    }
+    .btn-primary:hover {
+      background: var(--ink-soft);
+      transform: translateY(-1.5px);
+      box-shadow:
+        0 2px 4px rgba(26,25,22,0.30),
+        0 12px 30px rgba(26,25,22,0.22),
+        0 10px 34px rgba(232,160,0,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.14);
+    }
+    .btn-primary:active { transform: translateY(0); box-shadow:
+        0 1px 2px rgba(26,25,22,0.28), 0 4px 12px rgba(26,25,22,0.18),
+        0 4px 16px rgba(232,160,0,0.12), inset 0 1px 0 rgba(255,255,255,0.10); }
+    .btn-secondary {
+      background: var(--white);
+      color: var(--ink);
+      box-shadow:
+        0 0 0 1px var(--ink-ghost),
+        0 1px 2px rgba(0,0,0,0.04),
+        0 4px 14px rgba(0,0,0,0.06);
+    }
+    .btn-secondary:hover {
+      transform: translateY(-1.5px);
+      box-shadow:
+        0 0 0 1px var(--ink-faint),
+        0 2px 4px rgba(0,0,0,0.05),
+        0 10px 26px rgba(0,0,0,0.08);
+    }
+    .btn-secondary:active { transform: translateY(0); }
+    .btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+
+    /* ─── Hero: the success moment ─── */
+    .hero {
+      padding: 9rem 0 2.5rem;
+      text-align: center;
+    }
+    .installed-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      background: var(--green-bg);
+      border: 1px solid rgba(90,138,106,0.28);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1.75rem;
+    }
+    .installed-pill .ck {
+      width: 1rem; height: 1rem; border-radius: 50%;
+      background: var(--green); color: var(--white);
+      font-size: 0.62rem; font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 7vw, 3rem);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin: 0 auto 1rem;
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--ink-muted);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ─── Chrome-window mockup (reuses .cw-* vocabulary from index.html) ─── */
+    .mockup-section { padding: 2.5rem 0 1rem; }
+    .chrome-win {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--cr-toolbar);
+      box-shadow:
+        0 1px 3px rgba(0,0,0,0.05),
+        0 18px 50px rgba(0,0,0,0.14),
+        0 8px 30px rgba(232,160,0,0.10),
+        0 0 0 1px rgba(0,0,0,0.05);
+    }
+
+    /* tab strip + traffic lights */
+    .cw-tabbar {
+      display: flex; align-items: center; gap: 6px;
+      height: 38px; padding: 0 10px;
+      background: var(--cr-tabstrip);
+    }
+    .cw-traffic { display: flex; gap: 8px; align-items: center; padding-right: 4px; }
+    .cw-traffic i { width: 12px; height: 12px; border-radius: 50%; }
+    .cw-traffic i:nth-child(1) { background: #ff5f57; }
+    .cw-traffic i:nth-child(2) { background: #febc2e; }
+    .cw-traffic i:nth-child(3) { background: #28c840; }
+    .cw-tab {
+      display: flex; align-items: center; gap: 7px;
+      height: 30px; width: 220px;
+      padding: 0 10px;
+      background: var(--cr-tab);
+      border-radius: 9px 9px 0 0;
+      align-self: flex-end;
+    }
+    .cw-tab .fav {
+      width: 11px; height: 11px; border-radius: 3px;
+      background: var(--amber); flex-shrink: 0;
+    }
+    .cw-tab .tt {
+      font-size: 11.5px; color: var(--cr-text); flex: 1;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .cw-tab .tx { font-size: 13px; color: #80868b; flex-shrink: 0; line-height: 1; }
+    .cw-newtab {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #5f6368; font-size: 16px; line-height: 1;
+    }
+
+    /* toolbar / omnibox / extensions */
+    .cw-toolbar {
+      display: flex; align-items: center; gap: 6px;
+      height: 44px; padding: 0 10px;
+      background: var(--cr-toolbar);
+      border-bottom: 1px solid var(--cr-hair);
+    }
+    .cw-nav { display: flex; align-items: center; gap: 2px; }
+    .cw-navbtn {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--cr-icon); font-size: 15px; line-height: 1;
+    }
+    .cw-omni {
+      flex: 1; display: flex; align-items: center; gap: 8px;
+      height: 30px; padding: 0 12px;
+      background: var(--cr-omni); border-radius: 999px;
+    }
+    .cw-omni .lock { color: var(--cr-icon); display: flex; align-items: center; font-size: 11px; }
+    .cw-omni .url {
+      font-size: 12.5px; color: var(--cr-text); flex: 1;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .cw-omni .star { color: var(--cr-icon); flex-shrink: 0; font-size: 13px; line-height: 1; }
+    .cw-ext { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .cw-puzzle {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--cr-icon); font-size: 14px;
+    }
+    /* the amber ◆ pinned Facsimile extension icon — highlighted */
+    .cw-exticon {
+      width: 26px; height: 26px; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--amber-bg);
+      color: var(--amber-text);
+      border: 1px solid rgba(232,160,0,0.45);
+      font-size: 13px; line-height: 1; flex-shrink: 0;
+      box-shadow: 0 0 0 3px rgba(232,160,0,0.16);
+    }
+    .cw-avatar {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--ink-soft); color: var(--white);
+      font-size: 11px; font-weight: 600;
+    }
+
+    /* window body */
+    .cw-page {
+      position: relative;
+      background: var(--canvas-light);
+      padding: 2.25rem 1.5rem 2.75rem;
+      min-height: 200px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    /* Chrome's real post-install confirmation card + up-arrow to the ◆ */
+    .cw-confirm {
+      position: relative;
+      background: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 12px 36px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+      padding: 1.25rem 1.4rem;
+      max-width: 320px;
+      width: 100%;
+      text-align: center;
+    }
+    /* up-arrow / pointer toward the pinned ◆ icon (top-right area) */
+    .cw-confirm::before {
+      content: "";
+      position: absolute;
+      top: -8px; right: 26px;
+      width: 16px; height: 16px;
+      background: var(--white);
+      border-left: 1px solid rgba(0,0,0,0.06);
+      border-top: 1px solid rgba(0,0,0,0.06);
+      transform: rotate(45deg);
+    }
+    .cw-confirm-icon {
+      width: 34px; height: 34px; border-radius: 9px;
+      margin: 0 auto 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--amber-bg); color: var(--amber-text);
+      border: 1px solid rgba(232,160,0,0.40);
+      font-size: 16px; line-height: 1;
+    }
+    .cw-confirm h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .cw-confirm p { font-size: 0.8rem; color: var(--ink-muted); line-height: 1.55; }
+    .cw-confirm .pin-hint {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      margin-top: 0.85rem;
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--amber-text); background: #fef9eb;
+      border: 1px solid rgba(232,160,0,0.30);
+      padding: 0.3rem 0.7rem; border-radius: 999px;
+    }
+    .cw-confirm .pin-hint .up { font-size: 0.85rem; line-height: 1; }
+
+    /* ─── Setup steps (reuses .install-card / numbered .install-step-n pattern) ─── */
+    .setup-section { padding: 2.5rem 0 1rem; }
+    .setup-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    .install-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .install-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .install-card p { font-size: 0.85rem; color: var(--ink-muted); line-height: 1.65; }
+    .install-card code {
+      font-family: var(--font-mono); font-size: 0.8em;
+      background: var(--canvas); padding: 0.1em 0.35em; border-radius: 4px;
+      color: var(--ink-soft);
+    }
+    .install-step-n {
+      flex-shrink: 0;
+      font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600;
+      color: var(--amber-text); background: #fef9eb;
+      width: 1.6rem; height: 1.6rem; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      padding: 2.5rem 0 1rem;
+      text-align: center;
+    }
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .cta-actions .btn {
+      min-width: 190px;
+      padding: 0.85rem 1.6rem;
+      font-size: 0.9rem;
+    }
+    .hero-byline {
+      font-size: 0.8rem;
+      color: var(--ink-faint);
+      text-align: center;
+    }
+    .hero-byline a {
+      color: var(--ink-muted);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid var(--ink-ghost);
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .hero-byline a:hover { color: var(--ink); border-color: var(--amber); }
+
+    /* ─── Footer (identical to index.html) ─── */
+    .footer {
+      padding: 2.5rem 0;
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--ink-faint);
+    }
+    .footer a {
+      color: var(--ink-faint);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer a:hover { color: var(--ink-muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .setup-grid { grid-template-columns: 1fr; }
+      .chrome-win { max-width: 100%; }
+      .cw-tab { width: auto; max-width: 160px; }
+      .footer { flex-direction: column; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/" class="nav-logo">Facsimile</a>
+    <div class="nav-links">
+      <a href="https://github.com/ArtisticMedic/facsimile-url-to-figma">GitHub</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- HERO: the success moment -->
+    <header class="hero">
+      <span class="installed-pill"><span class="ck" aria-hidden="true">✓</span>Installed</span>
+      <h1>You're all set.</h1>
+      <p class="hero-sub">Facsimile is pinned to your toolbar. Two quick things before your first capture.</p>
+    </header>
+
+    <!-- CHROME-WINDOW MOCKUP -->
+    <section class="mockup-section">
+      <div class="chrome-win" role="img" aria-label="Chrome window showing Facsimile added and pinned to the toolbar">
+
+        <div class="cw-tabbar" aria-hidden="true">
+          <span class="cw-traffic"><i></i><i></i><i></i></span>
+          <div class="cw-tab">
+            <span class="fav"></span>
+            <span class="tt">Facsimile — Installed</span>
+            <span class="tx">×</span>
+          </div>
+          <span class="cw-newtab">+</span>
+        </div>
+
+        <div class="cw-toolbar" aria-hidden="true">
+          <div class="cw-nav">
+            <span class="cw-navbtn">‹</span>
+            <span class="cw-navbtn">›</span>
+            <span class="cw-navbtn">⟳</span>
+          </div>
+          <div class="cw-omni">
+            <span class="lock">🔒</span>
+            <span class="url">chrome://extensions</span>
+            <span class="star">☆</span>
+          </div>
+          <div class="cw-ext">
+            <span class="cw-puzzle">🧩</span>
+            <span class="cw-exticon">◆</span>
+            <span class="cw-avatar">T</span>
+          </div>
+        </div>
+
+        <div class="cw-page">
+          <div class="cw-confirm">
+            <div class="cw-confirm-icon" aria-hidden="true">◆</div>
+            <h3>Facsimile added to Chrome</h3>
+            <p>Your extension is ready. Find it pinned to the toolbar — the amber diamond above.</p>
+            <span class="pin-hint"><span class="up" aria-hidden="true">↑</span>Pin me — click here to capture</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TWO SETUP STEPS -->
+    <section class="setup-section" aria-label="Setup steps">
+      <div class="setup-grid">
+
+        <div class="install-card">
+          <span class="install-step-n" aria-hidden="true">1</span>
+          <h3>Allow it on local files</h3>
+          <p>To capture local HTML files (<code>file://</code>), open <code>chrome://extensions</code> → Facsimile → Details, and turn on <strong>Allow access to file URLs</strong>. This lets you capture local builds, not just live sites.</p>
+        </div>
+
+        <div class="install-card">
+          <span class="install-step-n" aria-hidden="true">2</span>
+          <h3>Click the loader to copy</h3>
+          <p>The first time you capture on a site, Chrome asks for clipboard permission. When the page-side bar shows a spinner, click it once to grant access and copy to your clipboard — after that it's automatic.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="cta-actions">
+        <a href="/" class="btn btn-primary">Capture your first page</a>
+        <a href="https://github.com/ArtisticMedic/facsimile-url-to-figma" class="btn btn-secondary">Read the docs</a>
+      </div>
+      <p class="hero-byline">Built by <a href="https://timgailey.com/?ref=facsimile">Tim Gailey</a></p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div>Facsimile — MIT License</div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/privacy">Privacy</a>
+        <a href="https://github.com/ArtisticMedic/facsimile-url-to-figma">GitHub</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
