@@ -4,7 +4,11 @@
 
 ## Copy any URL to Figma design layers.
 
-[Website](https://facsimile.timgailey.com/)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/goficbhhplljkpdodhdfebipcfengkhb?label=Chrome%20Web%20Store&color=e8a000)](https://chromewebstore.google.com/detail/facsimile-url-to-design/goficbhhplljkpdodhdfebipcfengkhb)
+[![Users](https://img.shields.io/chrome-web-store/users/goficbhhplljkpdodhdfebipcfengkhb?color=e8a000)](https://chromewebstore.google.com/detail/facsimile-url-to-design/goficbhhplljkpdodhdfebipcfengkhb)
+[![Rating](https://img.shields.io/chrome-web-store/rating/goficbhhplljkpdodhdfebipcfengkhb?color=e8a000)](https://chromewebstore.google.com/detail/facsimile-url-to-design/goficbhhplljkpdodhdfebipcfengkhb)
+
+[Add to Chrome](https://chromewebstore.google.com/detail/facsimile-url-to-design/goficbhhplljkpdodhdfebipcfengkhb) · [Website](https://facsimile.timgailey.com/)
 
 A free Chrome extension to capture any local or live URL and send it to Figma as an editable design with layers intact. This operates with the same core features and fidelity that the Claude Code × Figma plug-in works, but without needing a Claude Code/AI subscription. This makes it handy for people who want to save Claude credits while working with HTML and Figma, or for those who want to capture a webpage or design into Figma. 
 
@@ -18,8 +22,18 @@ As of March 25, 2026, this works with any Figma account (free or paid), and in b
 
 ## Install the Extension
 
+### From the Chrome Web Store (recommended)
+
+**[Add to Chrome →](https://chromewebstore.google.com/detail/facsimile-url-to-design/goficbhhplljkpdodhdfebipcfengkhb)**
+
+One click, automatic updates. Free — no account, no subscription. Then pin it from the toolbar puzzle-piece menu and you're set.
+
+---
+
+### Developer install (from source)
+
 > [!IMPORTANT]
-> This is a developer install — it takes about 30 seconds.
+> Only needed if you want to run from source or modify the extension — it takes about 30 seconds.
 
 **1. Get the files**
 Clone or download this repo to your computer.
