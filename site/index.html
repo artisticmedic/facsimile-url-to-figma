@@ -184,6 +184,7 @@
       align-items: center;
       justify-content: center;
       gap: 0.4rem;
+      white-space: nowrap;
     }
 
     /* primary: clean dark (Vercel/Radix) — hairline top highlight, crisp hover */
@@ -260,7 +261,7 @@
       margin-bottom: 1rem;
     }
     .hero-actions .btn {
-      min-width: 170px;
+      min-width: 210px;
       padding: 0.8rem 1.5rem;
       font-size: 0.9rem;
       justify-content: center;
@@ -795,6 +796,12 @@
       margin-bottom: 2rem;
       font-size: 1rem;
     }
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+    .cta-actions .btn { min-width: 210px; }
 
     /* ─── Install ─── */
     .install-section { padding: 2rem 0 4rem; }
@@ -883,6 +890,12 @@
       .amber-checks { grid-template-columns: 1fr 1fr; justify-items: center; }
       .stats-row { flex-direction: column; gap: 1.5rem; }
       .footer { flex-direction: column; gap: 1rem; }
+    }
+
+    /* Phones: stack the CTA pairs so equal-width buttons don't overflow */
+    @media (max-width: 460px) {
+      .hero-actions, .cta-actions { flex-direction: column; align-items: center; }
+      .hero-actions .btn, .cta-actions .btn { width: 100%; max-width: 280px; }
     }
 
   /* ─── Hero capture demo ─── */
@@ -1237,7 +1250,7 @@
       <p class="hero-sub">One click in Chrome. Pick any element. Paste into Figma as editable layers. 100% free.</p>
 
       <div class="hero-actions">
-        <a href="#install" class="btn btn-primary">Install Facsimile</a>
+        <a href="https://chromewebstore.google.com/detail/facsimile-url-to-design/goficbhhplljkpdodhdfebipcfengkhb" class="btn btn-primary">Add to Chrome</a>
         <a href="https://github.com/ArtisticMedic/facsimile-url-to-figma" class="btn btn-secondary">View on GitHub</a>
       </div>
 
@@ -1617,7 +1630,7 @@
           </div>
           <div class="step-num">1</div>
           <h3>Install Facsimile</h3>
-          <p>Download, unzip, and load it unpacked in Chrome — store listing coming soon. No account needed.</p>
+          <p>Add it to Chrome from the Web Store in one click. Free, no account needed.</p>
         </div>
         <div class="step">
           <div class="step-stage step-stage--capture" aria-hidden="true">
@@ -1672,7 +1685,7 @@
           <li>No data collection</li>
           <li>MIT licensed</li>
         </ul>
-        <a href="#install" class="btn btn-primary">Install Facsimile</a>
+        <a href="https://chromewebstore.google.com/detail/facsimile-url-to-design/goficbhhplljkpdodhdfebipcfengkhb" class="btn btn-primary">Add to Chrome — Free</a>
       </div>
     </div>
 
@@ -1712,35 +1725,33 @@
     <section class="install-section" id="install">
       <div class="section-header">
         <h2>Get Facsimile</h2>
-        <p>A Chrome Web Store listing is on the way. Until then, it's a 30-second developer install.</p>
+        <p>Now on the Chrome Web Store — one click, automatic updates, 100% free.</p>
       </div>
 
       <div class="install-grid">
-        <div class="install-card is-soon">
-          <div class="install-badge">Coming soon</div>
+        <div class="install-card is-live">
           <h3>Chrome Web Store</h3>
-          <p>One-click install with automatic updates. We're getting the listing ready.</p>
-          <span class="btn btn-disabled" aria-disabled="true">Chrome Web Store — soon</span>
-          <p class="install-note">Want a ping when it lands? <a href="https://github.com/ArtisticMedic/facsimile-url-to-figma">Star the repo</a></p>
+          <p>One-click install with automatic updates. No account, no subscription.</p>
+          <a href="https://chromewebstore.google.com/detail/facsimile-url-to-design/goficbhhplljkpdodhdfebipcfengkhb" class="btn btn-primary">Add to Chrome — Free</a>
+          <p class="install-note">No sign-up. No data collection. <a href="https://github.com/ArtisticMedic/facsimile-url-to-figma">Star the repo</a></p>
         </div>
 
-        <div class="install-card is-live">
-          <div class="install-badge is-live">Available now</div>
+        <div class="install-card is-soon">
           <h3>Install from source</h3>
           <ol class="install-steps">
             <li><span class="install-step-n">1</span> Download the ZIP from GitHub and unzip it</li>
             <li><span class="install-step-n">2</span> Open <code>chrome://extensions</code> and turn on Developer mode</li>
             <li><span class="install-step-n">3</span> Click <strong>Load unpacked</strong> and pick the <code>extension/</code> folder</li>
           </ol>
-          <a href="https://github.com/ArtisticMedic/facsimile-url-to-figma#install-the-extension" class="btn btn-primary">Install from source</a>
+          <a href="https://github.com/ArtisticMedic/facsimile-url-to-figma#install-the-extension" class="btn btn-secondary">Install from source</a>
         </div>
       </div>
     </section>
 
     <section class="cta-section">
       <h2>Ready to capture?</h2>
-      <div style="display: flex; justify-content: center; gap: 0.6rem;">
-        <a href="#install" class="btn btn-primary">Install Facsimile</a>
+      <div class="cta-actions">
+        <a href="https://chromewebstore.google.com/detail/facsimile-url-to-design/goficbhhplljkpdodhdfebipcfengkhb" class="btn btn-primary">Add to Chrome — Free</a>
         <a href="https://github.com/ArtisticMedic/facsimile-url-to-figma" class="btn btn-secondary">Star on GitHub</a>
       </div>
     </section>
